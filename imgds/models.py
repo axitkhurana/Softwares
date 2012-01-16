@@ -18,6 +18,6 @@ class Software(models.Model):
     date_added = models.DateTimeField('Date Added', default=datetime.now())
     download_count = models.IntegerField('Downloads', default=0)
     added_by = models.CharField('Uploaded By', max_length=20) #default value
-
+    soft_file = models.FileField('File', upload_to='software')
     def __unicode__(self):
         return '%s %s' % (self.soft_name, self.version)

@@ -16,3 +16,5 @@ CATEGORIES = (
     ('drivers', 'Drivers'),
     ('developer', 'Developer Tools'),
 )
+
+SOFTWARE_LOCATION = 'softwares/' #after media_url
