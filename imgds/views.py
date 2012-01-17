@@ -28,8 +28,9 @@ def pullfromfilehippo(request, category=None, init=None):
 
             #for software file
             path_dir = os.path.join(settings.MEDIA_ROOT, SOFTWARE_LOCATION)
-            file_name = download(soft['url'], path_dir, soft['soft_name'])
-            return HttpResponse(file_name)
+
+            file_name = download(soft['url'], path_dir,
+                    soft['soft_name']+soft['version'])
             new_software = Software(soft_name=soft['soft_name'],
                    category='internet', url=soft['url'],
                    version=soft['version'],

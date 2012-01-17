@@ -48,7 +48,7 @@ def parse_init(html_url):
             if not counter % 2:
                 p.feed(td.renderContents())
                 img_url = p.img_url
-                pieces = (html_url, p.a_url)
+                pieces = ('http://www.filehippo.com', p.a_url)
                 a_url = '/'.join(s.strip('/') for s in pieces)
             else:
                 soft_name_version = td.a.contents[0]
@@ -66,7 +66,7 @@ def parse_init(html_url):
                     'description' : description,
                     'img_url' : img_url,
                     })
-    print soft_list
+    return soft_list
 
 def download(url, path_dir, soft_name):
     """download from indirect url, takes cares of redirects and gets correct
@@ -80,12 +80,13 @@ def download(url, path_dir, soft_name):
     temp2_url = meta_redirect(temp_html.read())
     pieces = ('http://www.filehippo.com', temp2_url)
     final_url = '/'.join(s.strip('/') for s in pieces)
-    temp_file, headers = urllib.urlretrieve(final_url)
+    final_file = urllib.urlopen(final_url)
+    temp_file, headers = urllib.urlretrieve(final_file.url)
     file_extension = os.path.splitext(temp_file)[1]
-    file_name = soft_name + file_extension
+    file_name = " ".join([soft_name,file_extension])
     final_location = os.path.join(path_dir, file_name)
     os.rename(temp_file, final_location)
-    return [url, final_url, file_name, file_extension, headers]
+    return file_name
 
 def parse_rss(rss_url):
     p = ParseLinks()
