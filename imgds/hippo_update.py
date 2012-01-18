@@ -39,33 +39,50 @@ def parse_init(html_url):
     html = urllib.urlopen(html_url).read()
     soup = BeautifulSoup(html)
     soft_list = []
-    """<tr><td><a href="/download_adobe_air/"><img src="http://cache.filehippo.com/img/ex/1042__air.gif"style="width:32px;height:32px;margin-right:5px;" alt="Download Adobe Air 3.2.0.1320 Beta 2" border="0" /></a></td>
-    <td><h2><a href="/download_adobe_air/">Adobe Air 3.2.0.1320 Beta 2</a></h2><em>Adobe Systems Inc - 14.21MB (Freeware)</em><div>The Adobe&#174; AIR, runtime enables you to have your favorite web applications with you all the time. Since applications built for Adobe AIR run on your d...</div>
-    <div class="subprograms"><img src="http://cache.filehippo.com/img/d5.gif" align="bottom" alt="" /> <a href="/download_adobe_air/">Download</a></div></td><td></td></tr>"""
+    """<td><a href="/download_itunes/">
+        <img src="http://cache.filehippo.com/img/ex/1906__iTunes_icon.png"
+            style="width:32px;height:32px;margin-right:5px;" alt="Download iTunes"
+    border="0"/></a></td>
+        <td><h2><a href="/download_itunes/">iTunes</a></h2><em>Apple Inc -
+    (Freeware)</em><div>iTunes is a free application for Mac and PC. It plays
+    all your digital music and video. It syncs content to your iPod, iPhone, and
+    Apple TV. And it's ...</div><div class="subprograms"><img
+    src="http://cache.filehippo.com/img/d5.gif" align="bottom" alt="" /> <a
+    class="title" href="/download_itunes_32/">iTunes 10.5.2 (32-bit)</a> - <a
+    href="/download_itunes_32/">Download</a><br/><img
+    src="http://cache.filehippo.com/img/d5.gif" align="bottom" alt="" /> <a
+    class="title" href="/download_itunes_64/">iTunes 10.5.2 (64-bit)</a> - <a
+    href="/download_itunes_64/">Download</a><br/></div></td><td></td>"""
     p = ParseLinks()
     for table in soup.findAll('table'):
         for counter,td in enumerate(table.findAll('td')):
-            if not counter % 2:
-                p.feed(td.renderContents())
-                img_url = p.img_url
-                pieces = ('http://www.filehippo.com', p.a_url)
-                a_url = '/'.join(s.strip('/') for s in pieces)
-            else:
-                soft_name_version = td.a.contents[0]
-                description = td.div.contents[0]
-                #split software at first occurrence of a number to get version
-                try:
-                    split_pt = re.search('\d',soft_name_version).start()
-                except AttributeError:
-                    # catch error if no number in string
-                    split_pt = len(soft_name_version)+1
-                soft_list.append({
-                    'soft_name': soft_name_version[:split_pt - 1],
-                    'version': soft_name_version[split_pt:],
-                    'url' : a_url,
-                    'description' : description,
-                    'img_url' : img_url,
-                    })
+            if counter == 0:
+                img_url = td.img['src']
+            elif counter == 1:
+                data = td.findAll('a', {'class':'title'})
+                if not data:
+                    data = td.findAll('a')[:1]
+                    #[<a href="/download_adobe_media_player/">Adobe Media Player#1.7</a>,
+                    #<a href="/download_adobe_media_player/">Download</a>][:1]
+                for soft in data:
+                    temp_url = soft['href']
+                    pieces = ('http://www.filehippo.com', temp_url)
+                    a_url = '/'.join(s.strip('/') for s in pieces)
+                    soft_name_version = soft.contents[0]
+                    description = td.div.contents[0]
+                    #split software at first occurrence of a number to get version
+                    try:
+                        split_pt = re.search('\d',soft_name_version).start()
+                    except AttributeError:
+                        # catch error if no number in string
+                        split_pt = len(soft_name_version)+1
+                    soft_list.append({
+                        'soft_name': soft_name_version[:split_pt - 1],
+                        'version': soft_name_version[split_pt:],
+                        'url' : a_url,
+                        'description' : description,
+                        'img_url' : img_url,
+                        })
     return soft_list
 
 def download(url, path_dir, soft_name):
@@ -119,9 +136,4 @@ def parse_rss(rss_url):
             'description' : nodes[2].text,
             'img_url' : img_url,
             })
-    #for a in soft_list:
-    #    print a
     return soft_list
-
-if __name__ == "__main__":
-    parse_init("http://www.filehippo.com/software/internet/")
