@@ -1,0 +1,4 @@
+{{ object.soft_name }}
+{{ object.category }}
+{{ object.version }}
+{{ object.description }}

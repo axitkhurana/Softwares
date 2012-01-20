@@ -1,4 +1,6 @@
 from django.http import HttpResponse
+from django.shortcuts import render_to_response
+from django.template.context import RequestContext
 from django.core.files import File
 from django.core.files.temp import NamedTemporaryFile
 from imgds.models import Software
@@ -10,7 +12,21 @@ import urllib
 import os
 
 def index(request):
-    pass
+    """ returns a dictionary with key as category 
+        & value as top 4 version entries accorrding to download
+        count """
+    top4={}
+    for category in CATEGORIES:
+        top4[category[0]] = Software.objects.filter(category=category[0]).order_by('-download_count')[:4]
+    if request.method == 'POST':
+        pass
+        #form=SearchForm(request.POST) # delete this line Results here
+    else:
+        #show search box
+        return render_to_response('index.html',
+                {'categories':CATEGORIES,'top4':top4},
+                context_instance=RequestContext(request))
+
 
 def pullfromfilehippo(request, category=None, init=None):
     base_url = 'http://www.filehippo.com/software/%s/'
@@ -32,7 +48,7 @@ def pullfromfilehippo(request, category=None, init=None):
             file_name = download(soft['url'], path_dir,
                     soft['soft_name']+soft['version'])
             new_software = Software(soft_name=soft['soft_name'],
-                   category='internet', url=soft['url'],
+                   category=category, url=soft['url'],
                    version=soft['version'],
                    description=soft['description'],
                    added_by='filehippo',

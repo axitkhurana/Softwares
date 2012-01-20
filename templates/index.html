@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %} Softwares {% endblock %}
+{% block content %}
+    <div class="row">
+        search box here
+    </div>
+    {% for category in categories %}
+    <div class="row">
+        <div class="four columns">
+            <div class="panel">
+                {{ categories }}
+                {{ top4 }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
