@@ -1,6 +1,3 @@
-/* Foundation v2.1.4 http://foundation.zurb.com */
-/* Artfully masterminded by ZURB  */
-
 /* -------------------------------------------------- 
    Table of Contents
 -----------------------------------------------------
@@ -14,13 +11,104 @@
    Shared Styles
 ----------------------------------------- */
 
+.navbar {
+  overflow: visible;
+  margin-bottom: 18px;
+}
+.navbar-inner {
+  padding-left: 0px;
+  padding-right: 0px;
+  background-color: #2c2c2c;
+  background-image: -moz-linear-gradient(top, #333333, #222222);
+  background-image: -ms-linear-gradient(top, #333333, #222222);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#333333), to(#222222));
+  background-image: -webkit-linear-gradient(top, #333333, #222222);
+  background-image: -o-linear-gradient(top, #333333, #222222);
+  background-image: linear-gradient(top, #333333, #222222);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#333333', endColorstr='#222222', GradientType=0);
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  border-radius: 0px;
+  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25), inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25), inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25), inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+}
 
+.navbar .brand {
+padding-right: 0;
+padding-left: 0;
+margin-left: 20px;
+font-weight: bold;
+color: black;
+text-shadow: 0 1px 0 rgba(255, 255, 255, .1), 0 0 30px rgba(255, 255, 255, .125);
+-webkit-transition: all .2s linear;
+-moz-transition: all .2s linear;
+transition: all .2s linear;
+display: block;
+padding: 8px 20px 12px;
+font-size: 20px;
+line-height: 1;
+}
 
+.super {
+font-weight:normal;
+vertical-align:super;
+font-size:12px;
+}
+
+.clearall {
+clear:both;
+}
 /* -----------------------------------------
-   Page Name 1
+   Index Page
 ----------------------------------------- */
+#search_form {
+margin-left:auto;
+margin-right:auto;
+width:386px;
+margin-top:25px;
+margin-bottom:125px;
+}
 
+#search_box{
+float:left;
+margin-right:5px
+}
 
+#search_button{
+float:left;
+}
+
+.category_box{
+float:left;
+padding-bottom:10px;
+}
+
+.category_box .category_name{
+margin-bottom:8px;
+}
+
+.category_box .category_name h5:hover{
+text-decoration:underline;
+}
+
+.category_box .image{
+float:left;
+margin-right:20px;
+}
+
+.category_box .rest{
+float:left;
+}
+
+.each4{
+margin-right:5px;
+margin-top:5px;
+}
+.each4 img{
+width:24px;
+}
 
 
 /* -----------------------------------------

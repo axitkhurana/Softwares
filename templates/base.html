@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 
 <!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"><![endif]-->
@@ -25,13 +26,19 @@
 		<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 	<![endif]-->
 
+    <script src="{{STATIC_URL}}js/foundation.js"></script>
+    <script src="{{STATIC_URL}}js/app.js"></script>
     <title>{% block title %}{% endblock %}</title>
 </head>
 
 <body>
     <div id="container">
-        <div id="header">
-            <a href="/">Softwares<span class="super">Alpha</span></a>
+        <div class="navbar">
+            <div class="navbar-inner">
+                <div class="container">
+                    <a href="/" class="brand">Softwares<span class="super">Alpha</span></a>
+                </div>
+            </div>
         </div>
         {% block content %} {% endblock %}
         <div id="footer">

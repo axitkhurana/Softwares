@@ -342,7 +342,7 @@
 		background: #00a6fc;
 		display: inline-block;
 		text-align: center;
-		padding: 9px 34px 11px;
+		padding: 8px 34px 11px;
 		color: #fff;
 		text-decoration: none;
 		font-weight: bold;
@@ -496,7 +496,7 @@
 	Panels
 	-------------------------------------------------- */
 	div.panel {
-		padding: 20px 20px 2px 20px;
+		padding: 20px 20px 15px 20px;
 		background: #efefef;
 		background: -moz-linear-gradient(top, #FFFFFF 0%, #F4F4F4 100%);
 		background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#FFFFFF), color-stop(100%,#F4F4F4));

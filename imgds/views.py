@@ -1,8 +1,9 @@
-from django.http import HttpResponse
-from django.shortcuts import render_to_response
+from django.http import HttpResponse, Http404
+from django.shortcuts import render_to_response, get_object_or_404
 from django.template.context import RequestContext
 from django.core.files import File
 from django.core.files.temp import NamedTemporaryFile
+from django.db.models import Q
 from imgds.models import Software
 from hippo_update import download, parse_rss, parse_init
 from django.conf import settings
@@ -27,6 +28,44 @@ def index(request):
                 {'categories':CATEGORIES,'top4':top4},
                 context_instance=RequestContext(request))
 
+def browse(request, icategory=None, isoftware=None):
+    if not isoftware:
+        softwares = Software.objects.filter(category =
+            icategory).order_by('-download_count')
+        if not softwares:
+            raise Http404
+        return HttpResponse(softwares)
+    software = get_object_or_404(Software, pk=isoftware)
+    return HttpResponse(software)
+
+
+def search(request):
+    "view for search"
+    query = request.GET.get('q', '').lower()
+    results=[]
+    if query:
+        #TODO: use haystack search, profile vs 3 queries
+        qset = (
+                Q(soft_name__icontains=query) |
+                Q(category__icontains=query) |
+                Q(description__icontains=query)
+               )
+        results = Software.objects.filter(qset)
+        soft_list = []
+        cat_list = []
+        desc_list = []
+        for result in results:
+            if query in result.soft_name.lower():
+                soft_list.append(result)
+            elif query in result.category.lower():
+                cat_list.append(result)
+            elif query in result.description.lower():
+                desc_list.append(result)
+        soft_list.sort(key = lambda software:software.download_count)
+        cat_list.sort(key = lambda software:software.download_count)
+        desc_list.sort(key = lambda software:software.download_count)
+        result = soft_list + cat_list + desc_list   
+    return HttpResponse(result)
 
 def pullfromfilehippo(request, category=None, init=None):
     base_url = 'http://www.filehippo.com/software/%s/'

@@ -1,16 +1,49 @@
 {% extends "base.html" %}
+{% load extra_tags %}
 {% block title %} Softwares {% endblock %}
 {% block content %}
     <div class="row">
-        search box here
+        <form action="{% url search %}" method="GET" class="nice" id="search_form">
+            <input type="text" name="q" class="input-text oversize" id="search_box">
+            <input type="submit" value="Search" class="medium red button radius" id="search_button">
+        </form>
+        <div class="clearall"></div>
     </div>
-    {% for category in categories %}
-    <div class="row">
-        <div class="four columns">
-            <div class="panel">
-                {{ categories }}
-                {{ top4 }}
+    
+    {% for category,name in categories %}
+        {% if forloop.counter0|divisibleby:3 %}
+            <div class="row">
+        {% endif %}
+            <div class="four columns">
+                <div class="panel category_box">
+                    <div class="image">
+                        <a href="{% url category category %}">
+                            <img src="{{STATIC_URL}}images/categories/{{category}}.jpg" />
+                        </a>
+                    </div>
+                    <div class="rest">
+                        <div class="category_name">
+                            <a href="{% url category category %}">
+                                <h5>{{ name }}</h5>
+                            </a>
+                        </div>
+                        <div class="top4">
+                            {% for software in top4|hash:category %}
+                                <span class="each4">
+                                    <a href="{% url browse category software.id %}">
+                                        <img src="{{MEDIA_URL}}{{software.image}}" />
+                                    </a>
+                                </span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <div class="clearall"></div>
             </div>
-        </div>
+        {% if forloop.counter|divisibleby:3 %}
+            </div>
+        {% endif %}
+    {% endfor %}
+
     </div>
 {% endblock %}
