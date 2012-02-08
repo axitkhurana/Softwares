@@ -112,7 +112,21 @@ width:24px;
 
 
 /* -----------------------------------------
-   Page Name 2
+   Results
 ----------------------------------------- */
 
+#results .download_button:hover {
+margin-top:2px;
+}
 
+#results tbody tr:hover{
+background-color:#E0E0E0;
+cursor:pointer;
+}
+
+/* -----------------------------------------
+    Each Software
+----------------------------------------- */
+.download_button:active {
+margin-top:2px;
+}

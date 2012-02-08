@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load extra_tags %}
+{% block title %} Softwares {% endblock %}
+{% block content %}
+    <table id="results">
+        <thead>
+            <tr>
+                <th>Image</th>
+                <th>Software</th>
+                <th>Version</th>
+                <th>Description</th>
+                <th>Added On</th>
+                <th>Down</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for software in softwares %}
+                <tr onclick="document.location = '{% url browse software.category software.id %}'">
+                    <td><img src="{{MEDIA_URL}}{{software.image}}" /></td>
+                    <td>{{ software.soft_name }}</td>
+                    <td>{{ software.version }}</td>
+                    <td>{{ software.description }}</td>
+                    <td>{{ software.date_added }}</td>
+                    <td>
+                        <a href="{{MEDIA_URL}}{{ software.soft_file }}">
+                            <img src="{{STATIC_URL}}images/misc/download.png" alt="Download" class="download_button"/>
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

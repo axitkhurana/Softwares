@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load extra_tags %}
+{% block title %} Softwares {% endblock %}
+{% block content %}
+
+<div class="row">
+    <div class="eight columns">
+        <img src="{{MEDIA_URL}}{{software.image}}" />
+        <h4>{{ software.soft_name }}</h4>
+        <h6>{{ software.version }}</h6>
+        <br />
+        <p>{{ software.description }}</p>
+    </div>
+    <div class="four columns">
+        <p>Added on {{ software.date_added }}</p>
+        <p>Download:</p>
+        <a href="{{MEDIA_URL}}{{ software.soft_file }}">
+            <img src="{{STATIC_URL}}images/misc/download.png" alt="Download" class="download_button"/>
+        </a>
+    </div>
+</div>
+{% endblock %}

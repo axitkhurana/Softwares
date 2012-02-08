@@ -2,13 +2,6 @@
 {% load extra_tags %}
 {% block title %} Softwares {% endblock %}
 {% block content %}
-    <div class="row">
-        <form action="{% url search %}" method="GET" class="nice" id="search_form">
-            <input type="text" name="q" class="input-text oversize" id="search_box">
-            <input type="submit" value="Search" class="medium red button radius" id="search_button">
-        </form>
-        <div class="clearall"></div>
-    </div>
     
     {% for category,name in categories %}
         {% if forloop.counter0|divisibleby:3 %}

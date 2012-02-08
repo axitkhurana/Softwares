@@ -21,22 +21,24 @@ def index(request):
         top4[category[0]] = Software.objects.filter(category=category[0]).order_by('-download_count')[:4]
     if request.method == 'POST':
         pass
-        #form=SearchForm(request.POST) # delete this line Results here
     else:
-        #show search box
         return render_to_response('index.html',
                 {'categories':CATEGORIES,'top4':top4},
                 context_instance=RequestContext(request))
 
-def browse(request, icategory=None, isoftware=None):
-    if not isoftware:
+def browse(request, category=None, softwareid=None):
+    if not softwareid:
         softwares = Software.objects.filter(category =
-            icategory).order_by('-download_count')
+            category).order_by('-download_count')
         if not softwares:
             raise Http404
-        return HttpResponse(softwares)
-    software = get_object_or_404(Software, pk=isoftware)
-    return HttpResponse(software)
+        return render_to_response('results.html',
+                {'softwares':softwares, 'query':category},
+                context_instance=RequestContext(request))
+    software = get_object_or_404(Software, pk=softwareid)
+    return render_to_response('eachsoft.html',
+                {'software':software, 'query':software.soft_name},
+                context_instance=RequestContext(request))
 
 
 def search(request):
@@ -64,8 +66,10 @@ def search(request):
         soft_list.sort(key = lambda software:software.download_count)
         cat_list.sort(key = lambda software:software.download_count)
         desc_list.sort(key = lambda software:software.download_count)
-        result = soft_list + cat_list + desc_list   
-    return HttpResponse(result)
+        result = soft_list + cat_list + desc_list
+    return render_to_response('results.html',
+            {'softwares':result, 'query':query},
+            context_instance=RequestContext(request))
 
 def pullfromfilehippo(request, category=None, init=None):
     base_url = 'http://www.filehippo.com/software/%s/'

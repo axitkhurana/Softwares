@@ -36,12 +36,21 @@
         <div class="navbar">
             <div class="navbar-inner">
                 <div class="container">
-                    <a href="/" class="brand">Softwares<span class="super">Alpha</span></a>
+                    <a href="/softwares/" class="brand">Softwares<span class="super">Alpha</span></a>
                 </div>
             </div>
         </div>
+        
+    <div class="row">
+        <form action="{% url search %}" method="GET" class="nice" id="search_form">
+            <input type="text" name="q" class="input-text oversize" id="search_box" value="{{query}}">
+            <input type="submit" value="Search" class="medium red button radius" id="search_button">
+        </form>
+        <div class="clearall"></div>
+    </div>
         {% block content %} {% endblock %}
-        <div id="footer">
+        <div id="footer" class="row">
+            <hr/>
             Copyright &copy; 2012 Akshit Khurana
         </div>
     </div>
