@@ -2,3 +2,5 @@
 *.swp
 media/
 static/
+settings.py
+local_settings.py
