@@ -64,6 +64,8 @@ def search(request):
         cat_list.sort(key = lambda software:software.download_count)
         desc_list.sort(key = lambda software:software.download_count)
         result = soft_list + cat_list + desc_list
+    else:
+        result = None
     return render_to_response('results.html',
             {'softwares':result, 'query':query},
             context_instance=RequestContext(request))
