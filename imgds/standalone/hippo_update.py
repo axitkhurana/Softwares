@@ -12,6 +12,8 @@ from imgds.constants import CATEGORIES, SOFTWARE_LOCATION
 from django.core.files import File
 from django.core.files.temp import NamedTemporaryFile
 
+opener = urllib2.build_opener()
+opener.addheaders = [('User-agent', 'Mozilla/5.0')]
 
 class ParseLinks(HTMLParser):
     def __init__(self):
@@ -41,7 +43,7 @@ def meta_redirect(content):
     return None
 
 def parse_init(html_url):
-    html = urllib.urlopen(html_url).read()
+    html = opener.open(html_url).read()
     soup = BeautifulSoup(html)
     soft_list = []
     """<td><a href="/download_itunes/">
@@ -93,7 +95,7 @@ def parse_init(html_url):
 def download(url, path_dir, soft_name):
     """download from indirect url, takes cares of redirects and gets correct
     file extension"""
-    html = urllib.urlopen(url).read()
+    html = opener.open(url).read()
     soup = BeautifulSoup(html)
     div = soup.find('div', {'id': 'dlbox'})
     pieces = (url, div.a['href'])
@@ -102,7 +104,7 @@ def download(url, path_dir, soft_name):
     temp2_url = meta_redirect(temp_html.read())
     pieces = ('http://www.filehippo.com', temp2_url)
     final_url = '/'.join(s.strip('/') for s in pieces)
-    final_file = urllib.urlopen(final_url)
+    final_file = opener.open(final_url)
     temp_file, headers = urllib.urlretrieve(final_file.url)
     file_extension = os.path.splitext(temp_file)[1]
     file_name = " ".join([soft_name,file_extension])
@@ -113,7 +115,7 @@ def download(url, path_dir, soft_name):
 
 def parse_rss(rss_url):
     p = ParseLinks()
-    rss = ElementTree.parse(urllib.urlopen(rss_url))
+    rss = ElementTree.parse(opener.open(rss_url))
 
     soft_list = []
     if sys.version_info < (2,7):
@@ -180,7 +182,7 @@ def pullfromfilehippo(category=None, init=None):
             temp_file, headers = urllib.urlretrieve(soft['img_url'])
             file_extension = os.path.splitext(temp_file)[1]
 
-            image = urllib2.urlopen(soft['img_url']).read()
+            image = opener.open(soft['img_url']).read()
             img_temp = NamedTemporaryFile(delete=True)
             img_temp.write(image)
             img_temp.flush()
