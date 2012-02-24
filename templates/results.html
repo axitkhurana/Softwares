@@ -2,6 +2,7 @@
 {% load extra_tags %}
 {% block title %} Softwares {% endblock %}
 {% block content %}
+{% if softwares %}
     <table id="results">
         <thead>
             <tr>
@@ -30,4 +31,7 @@
             {% endfor %}
         </tbody>
     </table>
+{% else %}
+    <p class="row"> No results found </p>
+{% endif %}
 {% endblock %}

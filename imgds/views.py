@@ -1,11 +1,8 @@
 from django.http import HttpResponse, Http404
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template.context import RequestContext
-from django.core.files import File
-from django.core.files.temp import NamedTemporaryFile
 from django.db.models import Q
 from imgds.models import Software
-from hippo_update import download, parse_rss, parse_init
 from django.conf import settings
 from constants import CATEGORIES, SOFTWARE_LOCATION
 import urllib2
@@ -67,44 +64,10 @@ def search(request):
         cat_list.sort(key = lambda software:software.download_count)
         desc_list.sort(key = lambda software:software.download_count)
         result = soft_list + cat_list + desc_list
+    else:
+        result = None
     return render_to_response('results.html',
             {'softwares':result, 'query':query},
             context_instance=RequestContext(request))
 
-def pullfromfilehippo(request, category=None, init=None):
-    base_url = 'http://www.filehippo.com/software/%s/'
-    if not init:
-        # download rss file if not initalizing
-        base_url = base_url + 'rss/'
-    url = base_url % category
-    if init:
-        soft_list = parse_init(url)
-    else:
-        soft_list = parse_rss(url)
-    for soft in soft_list:
-        if not Software.objects.filter(soft_name=soft['soft_name'],
-                version=soft['version']):
 
-            #for software file
-            path_dir = os.path.join(settings.MEDIA_ROOT, SOFTWARE_LOCATION)
-
-            file_name = download(soft['url'], path_dir,
-                    soft['soft_name']+soft['version'])
-            new_software = Software(soft_name=soft['soft_name'],
-                   category=category, url=soft['url'],
-                   version=soft['version'],
-                   description=soft['description'],
-                   added_by='filehippo',
-                   soft_file=os.path.join(SOFTWARE_LOCATION, file_name))
-
-            #for image
-            temp_file, headers = urllib.urlretrieve(soft['img_url'])
-            file_extension = os.path.splitext(temp_file)[1]
-
-            image = urllib2.urlopen(soft['img_url']).read()
-            img_temp = NamedTemporaryFile(delete=True)
-            img_temp.write(image)
-            img_temp.flush()
-            filename = soft['soft_name'] + file_extension
-            new_software.image.save(filename, File(img_temp), save=True)
-    return HttpResponse("Completed")
